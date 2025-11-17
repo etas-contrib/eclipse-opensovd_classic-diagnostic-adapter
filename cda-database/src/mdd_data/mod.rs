@@ -32,6 +32,9 @@ pub mod files;
 const FILE_MAGIC_HEX_STR: &str = "4d44442076657273696f6e203020202020202000";
 const FILE_MAGIC_BYTES_LEN: usize = FILE_MAGIC_HEX_STR.len() / 2;
 
+// we can allow it here as it is evaluate during compile time
+// and would cause debug builds to fail if something is wrong
+#[allow(clippy::arithmetic_side_effects)]
 const fn file_magic_bytes() -> [u8; FILE_MAGIC_BYTES_LEN] {
     let string_bytes = FILE_MAGIC_HEX_STR.as_bytes();
     let mut bytes = [0u8; FILE_MAGIC_BYTES_LEN];

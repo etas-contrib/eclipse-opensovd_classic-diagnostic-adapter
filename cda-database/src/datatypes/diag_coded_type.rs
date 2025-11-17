@@ -826,6 +826,8 @@ fn pack_data(
         if remainder != 0 {
             let last_byte_idx = bit_length / 8;
             if last_byte_idx < result.len() {
+                // this can be allowed as this operation here can never underflow.
+                #[allow(clippy::arithmetic_side_effects)]
                 let mask_byte = (1u8 << remainder) - 1;
                 result[last_byte_idx] &= mask_byte;
             }
@@ -844,9 +846,9 @@ fn pack_data(
             let mut result = vec![0u8; result_byte_len];
 
             let copy_bytes = data.len().min(result_byte_len);
-            let start_idx = result_byte_len - copy_bytes;
+            let start_idx = result_byte_len.saturating_sub(copy_bytes);
 
-            result[start_idx..].copy_from_slice(&data[data.len() - copy_bytes..]);
+            result[start_idx..].copy_from_slice(&data[data.len().saturating_sub(copy_bytes)..]);
             clear_bits_above_bit_len(bit_len, &mut result);
             apply_bit_mask(&mut result, &mask.data, bit_len, bit_pos);
 
@@ -858,9 +860,9 @@ fn pack_data(
         let mut result = vec![0u8; result_byte_len];
 
         let copy_bytes = data.len().min(result_byte_len);
-        let start_idx = result_byte_len - copy_bytes;
+        let start_idx = result_byte_len.saturating_sub(copy_bytes);
 
-        result[start_idx..].copy_from_slice(&data[data.len() - copy_bytes..]);
+        result[start_idx..].copy_from_slice(&data[data.len().saturating_sub(copy_bytes)..]);
         clear_bits_above_bit_len(bit_len, &mut result);
 
         Ok((result, bit_len))

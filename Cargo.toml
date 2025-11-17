@@ -110,6 +110,7 @@ similar_names = "allow"
 
 # additional lints
 clone_on_ref_ptr = "warn"
+arithmetic_side_effects = "deny"
 
 [profile.release.package."*"]
 opt-level = 3

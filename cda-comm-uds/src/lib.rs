@@ -397,7 +397,9 @@ impl<S: EcuGateway, R: DiagServiceResponse, T: EcuManager<Response = R>> UdsMana
                 break;
             }
 
-            let mut buf = Vec::with_capacity(/*block sequence counter*/ 1 + bytes_to_read);
+            let mut buf = Vec::with_capacity(
+                /*block sequence counter*/ 1usize.saturating_add(bytes_to_read),
+            );
             buf.push(next_block_sequence_counter);
             buf.extend_from_slice(&buffer[..bytes_to_read]);
 
