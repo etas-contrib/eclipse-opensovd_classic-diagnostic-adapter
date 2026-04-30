@@ -40,7 +40,7 @@ cda-plugin-security = { workspace = true }
 cda-health = { workspace = true }
 cda-extra = { workspace = true, optional = true }
 # args
-clap = { workspace = true, features = ["derive"] }
+clap = { workspace = true, features = ["derive", "env"] }
 # config
 figment = { workspace = true, features = ["env", "toml"] }
 futures = { workspace = true }
